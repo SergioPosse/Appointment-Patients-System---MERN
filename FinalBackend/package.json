@@ -1,0 +1,24 @@
+{
+  "name": "medical-care-rioiv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "test2": "./node_modules/.bin/cypress open"
+  },
+  "author": "sergio posse",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.23",
+    "morgan": "^1.10.0",
+    "node-env-file": "^0.1.8"
+  },
+  "devDependencies": {
+    "cypress": "^4.10.0",
+    "nodemon": "^2.0.4"
+  }
+}

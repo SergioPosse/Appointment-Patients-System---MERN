@@ -1,0 +1,69 @@
+
+.blank{
+    background-color: grey;
+}
+
+.current-day{
+    background-color: navajowhite;
+}
+.calendar-container{
+    background-color: palevioletred;
+    display: flex;
+    flex-direction:column;
+    height:100%;
+}
+
+.top-bar{
+    display: flex;
+    flex:1;
+    justify-content: space-between;
+    background-color:gray;
+    align-items: center;
+    max-height:10% !important;
+}
+.days-row{
+    flex:1;
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    background-color:goldenrod;
+    align-items: center;
+    border: 1px solid black;
+    max-height:10%;
+    padding:0px;
+
+
+}
+
+.days-grid{
+    flex:1;
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    background-color: darkolivegreen;
+    column-gap:2px;
+    row-gap:2px; 
+}
+
+.days-grid div{
+    border:1px solid black;
+}
+
+
+
+.top-bar div:nth-child(n){
+    border:1px solid black;
+}
+
+.days-row div:nth-child(n){
+    color: white;
+    margin: 2px;
+    border: salmon 1px solid;
+}
+
+.month,.year{
+    width:35%;
+    padding:6px;
+}
+
+.month:hover,.year:hover, .day:hover{
+    background-color:rgb(171, 95, 247);
+}

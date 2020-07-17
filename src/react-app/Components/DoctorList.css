@@ -1,0 +1,24 @@
+.grid{
+    display:grid;
+}
+
+#menu{
+    display:flex;
+    background-color: brown;
+    flex-grow:1;
+    min-height: 20%;
+}
+#menu *{
+    flex-grow:1;
+}
+
+
+#patients{
+    align-content: center;
+    justify-content: stretch;
+    background-color: aqua;
+    grid-column-start:1;
+    grid-row-start:2;
+    min-height: 80%;
+    justify-items: stretch;
+}

@@ -1,0 +1,51 @@
+.inner-container{
+    color:white;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    min-height:80vh;
+    min-width:80vw;
+    max-width:80vw;
+    max-height:80vh;
+    align-content:stretch;
+
+}
+.inner-container *{
+    margin:0.3em;
+}
+.wrapper-right{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    align-content:stretch;
+    justify-content: stretch;
+}
+.wrapper-left{
+    display:flex;
+    flex-direction:column;
+}
+.patient-list{
+    background-color:red;
+    height:40%;
+    align-self: stretch;
+
+}
+.doctor-list{
+    background-color:gray;
+    height:100% !important;
+    width:100%;
+    align-content:stretch;
+}
+.health-insurance-box{
+    background-color:blue;
+    height:20%;
+}
+.profile-header{
+    background-color:darkkhaki;
+    height:20%;
+}
+.schedule{
+    background-color: fuchsia;
+    height:80% !important;
+    align-items:stretch;
+    align-content:stretch;
+}
