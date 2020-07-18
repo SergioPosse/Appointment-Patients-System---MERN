@@ -3,6 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
+
 var env = require('node-env-file'); // .env file
 env(__dirname + '/.env');
 
@@ -11,14 +12,13 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-//middlewares (antes que llegue a las rutas ejecuto esto)
+//middlewares
 app.use(morgan('dev')); //para ver peticiones en consola que realizan usuarios
 app.use(cors());
 
-//routes
-app.use('/medical-care-rioiv/patients', require('./routes/patientRoutes'))
-app.use('/medical-care-rioiv/doctors', require('./routes/doctorRoutes'))
-app.use('/medical-care-rioiv/turns', require('./routes/turnRoutes'))
-app.use('/medical-care-rioiv/healthinsurance', require('./routes/healthinsuranceRoutes'))
+//static
+app.use(express.static(path.join(__dirname, 'public')));
+//uso path para unir __dirname y el nombre de mi public folder
+//esto es necesario porque linux y windows no usan los mismos slashes para las rutas
 
 module.exports = app;
