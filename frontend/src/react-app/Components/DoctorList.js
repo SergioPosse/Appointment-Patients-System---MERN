@@ -8,31 +8,89 @@ export default class DoctorList extends Component {
 
     render(){
 
-      const handlePatientsClick = () => {
-        ReactDOM.render(
-          <SearchIcon/>, document.getElementById('patients')
-          );
-      }
-
-      const handleDoctorsClick = () => {
-        ReactDOM.render(
-          "Doctor list", document.getElementById('patients')
-          );
-      }
-
         return(
-            <div className="grid">
-
-                <div id="menu">
-                  <button onClick={handlePatientsClick}>Patients</button>
-                  <button onClick={handleDoctorsClick}>Doctors</button>
-                </div>
-
-                <div id="patients">
-
-                </div>
-               
-            </div>
+          <div className="container">
+          <div className="header">
+            <input type="text"/>
+          </div>
+          <div className="content">
+          <table>
+            <thead>
+              
+              <th>Médico</th>
+              <th>Especialidad</th>
+              
+            </thead>
+            <tbody>
+              <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+      <tr>
+                <td>asd asd</td>
+                <td>Psicologia</td>
+              </tr>
+            </tbody>
+            
+          </table>
+          </div>
+        </div>
         )
     }
 }

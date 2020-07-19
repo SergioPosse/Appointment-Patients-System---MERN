@@ -1,6 +1,9 @@
 
 html body #app{
+  background-color:rgba(196, 188, 84, 0.705);
+  margin-left:auto;
+  margin-right: auto;
   height:80vh !important;
-  width:80vw !important;
-
+  width:90vw !important;
+  font-size: 2vh;
 }

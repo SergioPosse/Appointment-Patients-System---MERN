@@ -30,6 +30,7 @@
     border: 1px solid black;
     max-height:10%;
     padding:0px;
+    text-align: center;
 
 
 }
@@ -45,6 +46,7 @@
 
 .days-grid div{
     border:1px solid black;
+    text-align: center;
 }
 
 
@@ -57,11 +59,17 @@
     color: white;
     margin: 2px;
     border: salmon 1px solid;
+    
 }
 
 .month,.year{
     width:35%;
-    padding:6px;
+    height:90%;
+    justify-content: center;
+    align-content:center;
+    justify-items:center;
+    align-items:center;
+    text-align: center;
 }
 
 .month:hover,.year:hover, .day:hover{

@@ -1,39 +1,37 @@
 .inner-container{
     color:white;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    min-height:80vh;
-    min-width:80vw;
-    max-width:80vw;
-    max-height:80vh;
-    align-content:stretch;
-
+    background-color: cadetblue;
+    display: flex;
+    margin-left:auto;
+    margin-right: auto;
+    height:80vh;
+    width:80vw;
+    /* align-content:stretch; */
 }
 .inner-container *{
     margin:0.3em;
 }
 .wrapper-right{
+    width:80%;
     display:flex;
-    flex-direction:column;
-    align-items:stretch;
-    align-content:stretch;
-    justify-content: stretch;
+    flex-direction: column;
+    border: 1px solid red;
 }
 .wrapper-left{
     display:flex;
-    flex-direction:column;
+    width:20%;  
+    height:98%;
+    border: 1px solid red;
 }
-.patient-list{
+/* .patient-list{
     background-color:red;
     height:40%;
     align-self: stretch;
 
-}
+} */
 .doctor-list{
     background-color:gray;
-    height:100% !important;
-    width:100%;
-    align-content:stretch;
+   
 }
 .health-insurance-box{
     background-color:blue;
@@ -41,11 +39,10 @@
 }
 .profile-header{
     background-color:darkkhaki;
-    height:20%;
+    height:10%;
 }
 .schedule{
     background-color: fuchsia;
-    height:80% !important;
-    align-items:stretch;
-    align-content:stretch;
+    flex:1;
+    
 }
