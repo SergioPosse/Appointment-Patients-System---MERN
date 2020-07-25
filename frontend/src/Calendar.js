@@ -74,7 +74,9 @@ export default class Calendar extends Component{
                
             }
             for(let i=1; i<=this.state.daysInMonth; i++){
-                    if(i==this.state.currentDay){
+                    if(i==this.state.currentDay && this.state.currentYearNumber==moment().format("YYYY")
+                    && this.state.currentMonthNumber==moment().format("MM")
+                    ){
                         days.push(<div className="current-day day" key={i}>{i}</div>);
                     }
                     else{
