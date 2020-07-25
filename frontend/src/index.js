@@ -1,13 +1,11 @@
-const app = require('./app');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
 
-let port = app.get('port');
-
-//starting the server
-async function init(){
-    await app.listen(port,()=>{
-        console.log(`React cargado en server node en el puerto ${port}`);
-    });
-    
-}
-
-init();
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

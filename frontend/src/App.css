@@ -1,6 +1,5 @@
 .inner-container{
-    color:white;
-    background-color: cadetblue;
+    /* background-color: cadetblue; */
     display: flex;
     margin-left:auto;
     margin-right: auto;
@@ -15,22 +14,22 @@
     width:80%;
     display:flex;
     flex-direction: column;
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 .wrapper-left{
     display:flex;
     width:20%;  
     height:98%;
-    border: 1px solid red;
+    flex-direction: column;
+    /* border: 1px solid red; */
 }
-/* .patient-list{
-    background-color:red;
-    height:40%;
-    align-self: stretch;
+.patient-list{
+    height:50%;
 
-} */
+}
 .doctor-list{
-    background-color:gray;
+    /* background-color:gray; */
+    height:50%;
    
 }
 .health-insurance-box{
@@ -40,9 +39,19 @@
 .profile-header{
     background-color:darkkhaki;
     height:10%;
+    border-radius:3%;
 }
 .schedule{
-    background-color: fuchsia;
+    /* background-color: fuchsia; */
     flex:1;
+    border-radius: 3%;
     
+}
+.selected-doctor{
+    background-color:white;
+    color:black;
+    border:1px solid black;
+    width:50%;
+    text-align: center;
+    padding:1%;
 }

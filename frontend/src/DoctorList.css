@@ -1,0 +1,43 @@
+.container{
+	background-color: greenyellow;
+	display: grid;
+    grid-template-columns: 1fr;
+	height: 100%;
+    width: 100%;
+    grid-auto-rows: 10px;
+    grid-gap: 10px;
+	text-align: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    font-size: 0.8vw;
+    box-shadow: 0 0 0 1px cadetblue;
+}
+.content{
+    display: flex;
+    align-items: auto;
+    justify-content: center;
+}
+table{
+    text-align: center;
+    height:auto;
+    border:1px solid black;
+    table-layout: fixed;
+    width:90%;
+}
+table *{
+    border:0.30px solid rebeccapurple;
+}
+table thead th{
+	background-color:olivedrab;
+    color:white;
+    opacity: 50%;
+}
+table tr{
+    font-size: 0.9em;
+	background-color: pink;
+    color: black;
+}
+table tr:hover{
+	color:rgb(0, 0, 0);
+	background-color: green;
+}
