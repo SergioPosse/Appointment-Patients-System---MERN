@@ -1,56 +1,78 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect, useMemo, useRef} from 'react';
 import moment from 'moment';
+
 import './calendar.css';
 import { get_month_esp_eng, get_esp_day }  from './translate_esp_eng'
 
-export default class Calendar extends Component{
-    constructor(){
-        super();
-        var yearsRange = [];
-        for (var i = 1980; i <= moment().format("YYYY"); i++) {
-            yearsRange.push(i);
-        }
-        let result = get_month_esp_eng( moment().format("MMMM") );
-        let currentMonth = result.mes;
+const Calendar = (props)=>{
 
-        this.state = {
-            visibleMonths: false,
-            visibleYears: false,
+            const { description, getDayClicked } = props;
+
+            const yearsRange = useRef([]);
+            const currentMonth = useRef('Ninguno');
+
+
+            const range = yearsRange.current;
+
+            useMemo(()=>{
+                console.log("render yearsrange");
+                var range = [];
+                for (var i = 1980; i <= moment().format("YYYY"); i++) {
+                    range.push(i);
+                }
+                yearsRange.current = range;
+                console.log("yearsRange: "+yearsRange.current)
+            },[])
+
+            useMemo(()=>{
+                console.log("render translate months names");
+                let result = get_month_esp_eng( moment().format("MMMM") );
+                currentMonth.current = result.mes;
+            },[]);
+
+
+            //useref o usememo
+            const [visibleMonths, setVisibleMonths] = useState(false);
+            const [visibleYears, setVisibleYears] = useState(false);
+
+
+
             //aux states for calculate daysgrid
-            dayStart: "none",
-            startCol: undefined,
-            dayNames: moment.weekdays(),
-            monthNames: ['Enero',
+            const [dayStart, setDayStart] = useState("");
+            const [startCol, setStarCol] = useState(0);
+            const [dayNames, setDayNames] = useState(()=>moment.weekdays());
+            const [monthNames, setMonthNames] = useState(['Enero',
             'Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre' 
-            ],
-            years: yearsRange,
-
+            ]);
+            
             //update anytime that changes dates
-            currentDay: moment().format("D"),
-            currentMonth: currentMonth,
-            daysInMonth: moment().daysInMonth(),
-            daysGrid: [],
-            currentMonthNumber: moment().format("MM"),
-            currentYearNumber: moment().format("YYYY")
-        }
-    }
+            const [currentDay,setCurrentDay] = useState(()=>moment().format("D"));
+            const [selectedDay, setSelectedDay] = useState(null);
+            
+            const [daysInMonth,setDaysInMonth] = useState(()=>moment().daysInMonth());
+            const [daysGrid,setDaysGrid] = useState([]);
+            const [currentMonthNumber,setCurrentMonthNumber] = useState(()=>moment().format("MM"));
+            const [currentYearNumber,setCurrentYearNumber] = useState(()=>moment().format("YYYY"));
     
-    setDayStart(){
-         let currentMonthNumber = this.state.currentMonthNumber;
-         let currentYearNumber = this.state.currentYearNumber;
+               
+
+
+    const searchDayStart = async ()=>{
+        console.log("render searchdaystart");
          let myDate = `${currentYearNumber}-${currentMonthNumber}-01`;
-         var dayStart = moment(myDate).format("dddd");
-         this.setState({
-             dayStart: dayStart
-         });
+         var daystart = moment(myDate).format("dddd");
+        //  console.log("daystart var: "+daystart);
+         await setDayStart(daystart);
+        //  console.log("daystart: "+dayStart);
      }
 
-     process_days(){
+     const process_days = async ()=>{
+        console.log("render process days");
         let days = [];
         let start = undefined;
-        let daystart = this.state.dayStart;
-        this.state.dayNames.map((day)=>{ 
-            if(day==daystart){
+        let daystart = dayStart;
+        dayNames.map(async (day)=>{ 
+            if(day===daystart){
                 switch(daystart){
                     case 'Monday': start = 1;break;
                     case 'Tuesday': start = 2;break;
@@ -61,95 +83,122 @@ export default class Calendar extends Component{
                     case 'Sunday': start = 0;break;
                     default: break;
                 }
-                this.setState({
-                    startCol: start
-            });
+                await setStarCol(start);
+                
             }
             return null;
         });
-            for(let i=1; i<=this.state.daysInMonth+1; i++){
-                if (i<this.state.startCol+1){
+            for(let i=1; i<=daysInMonth+1; i++){
+                if (i<startCol+1){
                     days.push(<div className="blank" key={i+"blnk"}></div>);
                 }
                
             }
-            for(let i=1; i<=this.state.daysInMonth; i++){
-                    if(i==this.state.currentDay && this.state.currentYearNumber==moment().format("YYYY")
-                    && this.state.currentMonthNumber==moment().format("MM")
+            for(let i=1; i<=daysInMonth; i++){
+                    if(i===parseInt(currentDay) && parseInt(currentYearNumber)===parseInt(moment().format("YYYY"))
+                    && parseInt(currentMonthNumber)===parseInt(moment().format("MM"))
                     ){
-                        days.push(<div className="current-day day" key={i}>{i}</div>);
+                        days.push(<div className="current-day day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) }key={i} value={i}>{i}</div>);
                     }
                     else{
-                        days.push(<div className="day" key={i}>{i}</div>);
+                        if(i===parseInt(selectedDay)){
+                            days.push(<div className="selected-day day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}</div>);
+
+                        }
+                        else{
+                            days.push(<div className="day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}</div>);
+
+                        }
                     }
             }
-            this.setState({ daysGrid: days });            
+            await setDaysGrid(days);            
     }
 
-    async componentDidMount(){
-        await this.setDayStart();//fix error cause function not wait longer for update the state
-        await this.process_days();
-    };
+  
+        
 
-    toggleVisible(modal){
-        console.log(modal);
-        if(modal=="months-modal"){
-            this.setState({ visibleMonths: !this.state.visibleMonths });
+    const toggleVisible = (modal)=>{
+        console.log("render togglevisible");
+        if(modal==="months-modal"){
+            setVisibleMonths(!visibleMonths);
         }
-        if(modal=="years-modal"){
-            this.setState({ visibleYears: !this.state.visibleYears });
+        if(modal==="years-modal"){
+            setVisibleYears(!visibleYears);
         }
     }
 
-    async changeMonth(value){
+    const  changeMonth = async (value)=>{
+        console.log("render changemonth");
+        alert("Atencion: Se reinicio primer dia del mes");
         let month_data = get_month_esp_eng(value);
-        let date = `${this.state.currentYearNumber}-${month_data.mesNumero}-01`;
+        let date = `${currentYearNumber}-${month_data.mesNumero}-01`;
+        getDayClicked(`${1}-${month_data.mesNumero}-${currentYearNumber}`);
+        setSelectedDay(1);
         const daysinmonth = moment(date).daysInMonth();
-        await this.setState({
-            visibleMonths: !this.state.visibleMonths,
-            daysInMonth: daysinmonth,
-            currentMonth: month_data.mes,
-            currentMonthNumber: month_data.mesNumero
-        })
-        await this.setDayStart();
-        await this.process_days();
+        await setVisibleMonths(!visibleMonths);
+        await setDaysInMonth(daysinmonth);
+        currentMonth.current = month_data.mes;
+        await setCurrentMonthNumber(month_data.mesNumero);
+        
     }
 
-    async changeYear(value){
-        await this.setState({ currentYearNumber: value, visibleYears: !this.state.visibleYears })
-        await this.setDayStart();
-        await this.process_days();
+    const changeYear = async (value)=>{
+        console.log("render change year");
+        alert("Atencion: Se reinicio primer dia del mes");
+        getDayClicked(`${1}-${currentMonthNumber}-${value}`);
+        setSelectedDay(1);
+        await setCurrentYearNumber(value);
+        await setVisibleYears(!visibleYears);
+        
     }
 
-    render(){
+    const handleDayClick = async (e)=>{
+        
+        getDayClicked(`${e.day}-${currentMonthNumber}-${currentYearNumber}`);
+        await setSelectedDay(e.day);
+    }
+
+
+    useEffect(()=>{
+        console.log("render useffect in calendar depends currentday startcol daystart currentmonth currentyearnumber daysinmonth currentmonthnumber");
+        searchDayStart();//fix error cause function not wait longer for update the state
+        process_days();
+
+    },[selectedDay,startCol,dayStart,currentMonth,currentYearNumber,daysInMonth,currentMonthNumber]);    
         return(
             <div className='calendar-container'>
                     <div className='top-bar'>
                         {/* <div className='month' onClick={ (e)=>this.changeMonth( this.state.currentMonth) } > */}
-                        <div className='month' onClick={ ()=>this.toggleVisible("months-modal") } >{this.state.currentMonth}</div>
-                        <div className={ this.state.visibleMonths == true ? 'month-modal visible' : 'month-modal invisible'}>
+                        <div className='month' onClick={ ()=>toggleVisible("months-modal") } >{currentMonth.current}</div>
+                        <div className={ visibleMonths === true ? 'month-modal visible' : 'month-modal invisible'}>
                             <ul>
-                                { this.state.monthNames.map((month)=>{
-                                    return <li key={ month } onClick={()=>this.changeMonth(month)}>{ month }</li>
+                                { monthNames.map((month)=>{
+                                    return <li key={ month } onClick={()=>changeMonth(month)}>{ month }</li>
                                 }) }
                             </ul>
                         </div>
-                        <div className='year' onClick={ ()=>this.toggleVisible("years-modal") }>{this.state.currentYearNumber}</div>
-                        <div className={ this.state.visibleYears == true ? 'year-modal visible' : 'year-modal invisible'}>
+                            <div className='description decoration-gold'>{ description }</div>
+                        <div className='year' onClick={ ()=>toggleVisible("years-modal") }>{currentYearNumber}</div>
+                        <div className={ visibleYears === true ? 'year-modal visible' : 'year-modal invisible'}>
                             <ul>
-                                { this.state.years.map((year)=>{
-                                    return <li key={ year } onClick={ ()=>this.changeYear(year) }>{ year }</li>
+                                { range.map((year)=>{
+                                    return <li key={ year } onClick={ ()=>changeYear(year) }>{ year }</li>
                                 }) }
                             </ul>
                         </div>
                     </div>
                     <div className='days-row'>
-                        {this.state.dayNames.map(day =>{return <div key={day}>{get_esp_day(day)}</div>})}
+                        {dayNames.map(day =>{return <div key={day}>{get_esp_day(day)}</div>})}
                     </div>
                     <div className='days-grid'>
-                            {this.state.daysGrid}
+                            {daysGrid}
                     </div> 
+
+                    <div className='appointments'>
+                        
+                    </div>
             </div>
         );
-    };
 }
+
+export default Calendar

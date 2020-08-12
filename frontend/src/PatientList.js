@@ -1,13 +1,10 @@
 import React from 'react';
 
-const PatientList = ({ patientsp }) =>{
-
-  const printRow = ()=>{
-    //this return only works this way of write, pass 2 days figuring out whats the problem 
-    //cause wasnt render the item.name item.speciality in the element td, was empty before i fixed it
-    return patientsp.map( (item)=><tr key={ item.name }><td key={ item.name }>{item.name}</td><td key={ item.dni }>{ item.dni }</td></tr> )
-  }
-
+const PatientList = (props)=>{
+    const { patientsp, changePatient} = props
+    console.log("render patientlist")
+    const printRow =  patientsp.map( (item)=><tr onClick={ ()=>props.changePatient(item)} key={ item.name }><td key={ item.name }>{item.name}</td><td key={ item.dni }>{ item.dni }</td></tr> )
+   
   return(
     <div className="container">
     <div className="content">
@@ -23,7 +20,7 @@ const PatientList = ({ patientsp }) =>{
             </tr>
           </thead>
         <tbody>
-          { printRow() }
+          { printRow }
         </tbody>
       </table>
       </div>

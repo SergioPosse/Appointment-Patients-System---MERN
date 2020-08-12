@@ -18,7 +18,7 @@ app.use(cors());
 //routes
 app.use('/medical-care-rioiv/patients', require('./routes/patientRoutes'))
 app.use('/medical-care-rioiv/doctors', require('./routes/doctorRoutes'))
-app.use('/medical-care-rioiv/appoinments', require('./routes/appointmentRoutes'))
+app.use('/medical-care-rioiv/appointments', require('./routes/appointmentRoutes'))
 app.use('/medical-care-rioiv/healthinsurances', require('./routes/healthinsuranceRoutes'))
 
 module.exports = app;

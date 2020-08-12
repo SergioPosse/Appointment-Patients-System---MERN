@@ -5,6 +5,9 @@
 .current-day{
     background-color: navajowhite;
 }
+.selected-day{
+    background-color: aqua;
+}
 .calendar-container{
     background-color: palevioletred;
     display: flex;
@@ -16,8 +19,8 @@
     flex:1;
     justify-content: space-between;
     background-color:gray;
-    align-items: center;
     max-height:10% !important;
+    text-align: center;
 }
 .days-row{
     flex:1;
@@ -53,14 +56,22 @@
     border: salmon 1px solid;
     
 }
-.month,.year{
+.month,.year,.description{
     width:35%;
     height:90%;
-    justify-content: center;
-    align-content:center;
-    justify-items:center;
+
+}
+
+.decoration-gold{
+    border:2px solid gold;
+    background-color:white;
+    color: blacK;
+    font-weight: bold;
+    font-size:80%;
+    display:flex;
     align-items:center;
-    text-align: center;
+    justify-content:center;
+
 }
 
 .month:hover,.year:hover, .day:hover{

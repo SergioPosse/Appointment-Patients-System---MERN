@@ -1,74 +1,103 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import './App.css';
+import moment from 'moment';
 
 import DoctorList from './DoctorList'
 import PatientList from './PatientList'
 import Calendar from './Calendar'
 
 function App() {
+  console.log("render app");
+
+  const [patients, setPatients] = useState([]);
+  // const [appointments, setAppointments] = useState([]);
 
   const [doctors, setDoctors] = useState([]);
-  const [patients, setPatients] = useState([]);
-  const [selectedDoctor, setSelectedDoctor] = useState();
+  
+  const [selectedDate, setSelectedDate] = useState(moment().format("DD-MM-yyyy"))
+  const [selectedDoctor, setSelectedDoctor] = useState("Doctor: Ninguno!");
+  const [selectedPatient, setSelectedPatient] = useState("Paciente: Ninguno!")
 
   const changeDoctor = (data) => {
-    console.log(data)
-    setSelectedDoctor(data);
-
+    console.log("render changeDoctor fn in app")
+    setSelectedDoctor(data.name + "-"+ data.speciality);
   }
- 
-    useEffect( () => {
 
-      const getData = async ()=>{
-        const doctorsArr = await axios('http://localhost:666/medical-care-rioiv/doctors',);
-        //not sure if the spread operator work like this in hooks
-        //i read that a good practice is set a new copy of the previous state with a new copy of the data
-        setDoctors(...doctors, ...[doctorsArr.data]);
-  
-        const patientsArr = await axios('http://localhost:666/medical-care-rioiv/patients',);
-        setPatients(...patients, ...[patientsArr.data]);
-      }
-      const defaultDoctor = ()=>{
-        setSelectedDoctor("No Se Selecciono Doctor");
-      }
-        defaultDoctor();
+  const changePatient = (data) => {
+    console.log("render changePatient fn in app")
+    setSelectedPatient(data.name + "-"+ data.dni);
+  }
 
-        getData();
-    }, []);
+    useEffect(()=>{
+      console.log("render useEffect for doctors fetch in app")
+          axios
+            .get('http://localhost:666/medical-care-rioiv/doctors')
+            .then(res=>{
+                console.log(res.data)
+              setDoctors(res.data)
+            })
+    },[])
 
-    
+    useEffect(()=>{
+      console.log("render useeffect for patients fetch in app")
+          axios
+          .get('http://localhost:666/medical-care-rioiv/patients')
+          .then(res=>{
+            setPatients(res.data)//al actualizar con patients state usememo en patientlist component renderiza sino no
+            //porque use useMemo con dependencia de patientsp
+          })
+    },[])
+
+    // useEffect(()=>{
+    //   console.log("render useffect in app appointments")
+
+    //       axios
+    //       .get('http://localhost:666/medical-care-rioiv/appointments')
+    //       .then(res=>{
+    //         setAppointments(res.data)
+    //       })
+    // },[])
+
+    const getDayClicked = (date)=>{
+        setSelectedDate(date);
+    }
+
 
         return(
-        <div>
+        <>
             <div className="inner-container">
     
             <div className="wrapper-left">
                 <div className="doctor-list">
-                    <DoctorList onChange={changeDoctor} doctorsp={ doctors }/>
+                    <DoctorList changeDoctor={ changeDoctor } doctorsp={ doctors }/>
                 </div>
                 <div className="patient-list">
 
-                    <PatientList patientsp={ patients } />
+                    <PatientList changePatient={ changePatient } patientsp={ patients } />
                     
                 </div>
             </div>
 
             <div className="wrapper-right">
                 <div className="profile-header">
-                    <div className="selected-doctor">{ 
-                          selectedDoctor
+                    <div className="selected-patient">{ 
+                          selectedPatient
+                         }
+                    </div>
+                    <div className="selected-date">{ 
+                          selectedDate
                          }
                     </div>
                      
                 </div>
                 <div className='schedule'>
-                        <Calendar/>
+                        <Calendar description={ selectedDoctor } getDayClicked={ getDayClicked } />
                 </div>
             </div>
 
             </div>
-        </div>
+        </>
         )
     }
 export default App

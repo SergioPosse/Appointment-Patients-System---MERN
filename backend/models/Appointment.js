@@ -10,6 +10,10 @@ const AppointmentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Doctor"
   },
+  acomplishDate: {
+    type: Date,
+    required:true
+  },
   agreedDate: {
     type: Date,
     required: true

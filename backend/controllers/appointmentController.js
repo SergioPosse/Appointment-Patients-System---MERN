@@ -1,4 +1,4 @@
-const Appoinment = require('../models/Appointment');
+const Appointment = require('../models/Appointment');
 const Doctor = require('../models/Doctor');
 const Patient = require('../models/Patient');
 
@@ -8,27 +8,36 @@ const { MongooseDocument } = require('mongoose');
 const appointmentController = {};
 
 appointmentController.getAppointments = async (req,res) => { 
-    const appointments = await Appoinment.find({})
-    res.json(appoinments);
+    const appointments = await Appointment.find({})
+    console.log("server: "+appointments)
+    res.json(appointments);
 };
 
 appointmentController.getAppointment = (req,res) => { 
-    res.json( {message: "GET getTurn"} )
+    const id = req.params.id;
+    const appointment = Appointment.findById(id);
+    res.json( appointment )
 };
 
 appointmentController.createAppointment = async (req,res) => { 
-    const { doctor, patient, description } = req.body;
+    const { doctor, patient, description, acomplishDate } = req.body;
     //how to pass the patients and doctor object from the frontend???
     const newAppointment = new Appointment({
-        patient: patient._id,
-        doctor: doctor._id,
+        patient: patient,
+        doctor: doctor,
         agreedDate: moment.now(),
         description: description,
+        acomplishDate: acomplishDate,
         state: false
     });
 
-    await newAppointment.save();
-    res.json({message: 'New Appoinment Saved Suceffully'});
+    try{
+        await newAppointment.save();
+        res.json({message: 'New Appoinment Saved Suceffully'});
+    }catch(error){
+        res.status(403).json({message: error})
+    }
+    
 };
 
 appointmentController.editAppointment = (req,res) => { 
