@@ -14,10 +14,11 @@ import ReactCardFlip from 'react-card-flip';
 function App() {
   console.log("render app");
 
-  const [classPopUp, setClassPopUp] = useState("");
   const [isFlipped,setIsFlipped]=useState(false);
 
-  const dateRef = useRef("");
+  const dateRef = useRef();
+  const patientRef = useRef();
+  const doctorRef = useRef();
 
   const [patients, setPatients] = useState([]);
   const [appointments, setAppointments] = useState([]);
@@ -28,14 +29,21 @@ function App() {
   const [selectedDoctor, setSelectedDoctor] = useState("Doctor: Ninguno!");
   const [selectedPatient, setSelectedPatient] = useState("Paciente: Ninguno!")
 
-  const changeDoctor = (data) => {
+  const changeDoctor = async(data) => {
     console.log("render changeDoctor fn in app")
     setSelectedDoctor(data.name + "-"+ data.speciality);
+
+        let oldClass = doctorRef.current.className;
+        doctorRef.current.className = doctorRef.current.className.concat(" pop-up2");
+        await setTimeout(()=>{doctorRef.current.className = oldClass+" success"},500);
   }
 
-  const changePatient = (data) => {
+  const changePatient = async(data) => {
     console.log("render changePatient fn in app")
     setSelectedPatient(data.name + "-"+ data.dni);
+    let oldClass = patientRef.current.className;
+        patientRef.current.className = patientRef.current.className.concat(" pop-up2");
+        await setTimeout(()=>{patientRef.current.className = oldClass+" success"},500);
   }
 
     useEffect(()=>{
@@ -70,11 +78,10 @@ function App() {
 
     const getDayClicked = async (date)=>{
         console.log("getDayClicked  ")
-        setClassPopUp("pop-up")
         setSelectedDate(date);
         let oldClass = dateRef.current.className;
         dateRef.current.className = dateRef.current.className.concat(" pop-up2");
-        await setTimeout(()=>{dateRef.current.className = oldClass},500);
+        await setTimeout(()=>{dateRef.current.className = oldClass+" success"},500);
         
     }
 
@@ -100,11 +107,11 @@ function App() {
 
             <div className="wrapper-right">
                 <div className="profile-header">
-                    <div className="selected-patient">{ 
+                    <div ref={ patientRef } className="selected-patient">{ 
                           selectedPatient
                          }
                     </div>
-                    <div ref={dateRef}className={ classPopUp } className="selected-date">{ 
+                    <div ref={ dateRef } className="selected-date">{ 
                           selectedDate
                          }
                     </div>
@@ -113,7 +120,7 @@ function App() {
                 <div className='schedule'>
                   
                     <ReactCardFlip isFlipped={ isFlipped } flipDirection="vertical">
-                      <Calendar handleTurnClick={ handleTurnClick } description={ selectedDoctor } getDayClicked={ getDayClicked } >
+                      <Calendar handleTurnClick={ handleTurnClick } doctorRef={ doctorRef } description={ selectedDoctor } getDayClicked={ getDayClicked } >
                       </Calendar>
                       <Appointments handleTurnClick={ handleTurnClick } appointments={ appointments }>
                       </Appointments>

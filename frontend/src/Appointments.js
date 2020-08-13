@@ -4,7 +4,7 @@ import './Appointments.scss';
 const Appointments = (props) =>{
   console.log("render appointments");
   const { appointments, handleTurnClick } = props;
-  const arrAppointments = appointments.map( (item)=><tr key={ item.patient }><td key={ item.patient }>{item.patient}</td><td key={ item.doctor }>{item.doctor}</td></tr> );
+  const arrAppointments = appointments.map( (item)=><tr key={ item._id }><td key={ item._id }>{item.patient}</td><td key={ item.doctor }>{item.doctor}</td></tr> );
       
 
   return(

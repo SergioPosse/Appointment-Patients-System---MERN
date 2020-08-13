@@ -94,12 +94,17 @@
     100%{width:41%;}
 }
 
+.success{
+    background-color: rgb(0, 92, 0) !important;
+
+}
+
 .pop-up2{
     animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
-    background-color: palegreen;
+    background-color: rgb(61, 255, 103) !important;
     }
 
 @keyframes shake {

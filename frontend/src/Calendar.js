@@ -6,7 +6,7 @@ import { get_month_esp_eng, get_esp_day }  from './translate_esp_eng'
 
 const Calendar = (props)=>{
 
-            const { description, getDayClicked, handleTurnClick} = props;
+            const { description, getDayClicked, handleTurnClick, doctorRef} = props;
 
             const yearsRange = useRef([]);
             const currentMonth = useRef('Ninguno');
@@ -177,7 +177,7 @@ const Calendar = (props)=>{
                                 }) }
                             </ul>
                         </div>
-                            <div className='description decoration-gold'>{ description }</div>
+                            <div ref={ doctorRef } className='description decoration-gold'>{ description }</div>
                         <div className='year gradient-background' onClick={ ()=>toggleVisible("years-modal") }>{currentYearNumber}</div>
                         <div className={ visibleYears === true ? 'year-modal visible' : 'year-modal invisible'}>
                             <ul>
