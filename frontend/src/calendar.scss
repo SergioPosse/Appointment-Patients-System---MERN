@@ -76,6 +76,7 @@
 
 .month:hover,.year:hover, .day:hover{
     background-color:rgb(171, 95, 247);
+    cursor: pointer;
 }
 .invisible{
     visibility: hidden;
@@ -98,6 +99,11 @@
     background-color: cyan;
     color:black;
     border:1px solid chartreuse;
+    cursor:pointer;
+}
+
+.cursor-pointer{
+    cursor:pointer;
 }
 
 .year-modal{

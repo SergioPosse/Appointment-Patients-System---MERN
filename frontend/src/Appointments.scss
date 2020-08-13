@@ -1,0 +1,11 @@
+.appointments-container{
+    background-color: palevioletred;
+    display: flex;
+    flex-direction:column;
+    height:100%;
+}
+
+.content-appointments{
+    overflow-y:scroll;
+    max-height:60vh;
+}

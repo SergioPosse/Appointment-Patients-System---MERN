@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useMemo, useRef} from 'react';
 import moment from 'moment';
 
-import './calendar.css';
+import './calendar.scss';
 import { get_month_esp_eng, get_esp_day }  from './translate_esp_eng'
 
 const Calendar = (props)=>{
 
-            const { description, getDayClicked } = props;
+            const { description, getDayClicked, handleTurnClick} = props;
 
             const yearsRange = useRef([]);
             const currentMonth = useRef('Ninguno');
@@ -98,15 +98,15 @@ const Calendar = (props)=>{
                     if(i===parseInt(currentDay) && parseInt(currentYearNumber)===parseInt(moment().format("YYYY"))
                     && parseInt(currentMonthNumber)===parseInt(moment().format("MM"))
                     ){
-                        days.push(<div className="current-day day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) }key={i} value={i}>{i}</div>);
+                        days.push(<div className="gradient-background current-day day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) }key={i} value={i}>{i}</div>);
                     }
                     else{
                         if(i===parseInt(selectedDay)){
-                            days.push(<div className="selected-day day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}</div>);
+                            days.push(<div className="gradient-background selected-day day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}</div>);
 
                         }
                         else{
-                            days.push(<div className="day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}</div>);
+                            days.push(<div className="gradient-background day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}</div>);
 
                         }
                     }
@@ -169,20 +169,20 @@ const Calendar = (props)=>{
             <div className='calendar-container'>
                     <div className='top-bar'>
                         {/* <div className='month' onClick={ (e)=>this.changeMonth( this.state.currentMonth) } > */}
-                        <div className='month' onClick={ ()=>toggleVisible("months-modal") } >{currentMonth.current}</div>
+                        <div className='month gradient-background' onClick={ ()=>toggleVisible("months-modal") } >{currentMonth.current}</div>
                         <div className={ visibleMonths === true ? 'month-modal visible' : 'month-modal invisible'}>
                             <ul>
                                 { monthNames.map((month)=>{
-                                    return <li key={ month } onClick={()=>changeMonth(month)}>{ month }</li>
+                                    return <li className="gradient-background" key={ month } onClick={()=>changeMonth(month)}>{ month }</li>
                                 }) }
                             </ul>
                         </div>
                             <div className='description decoration-gold'>{ description }</div>
-                        <div className='year' onClick={ ()=>toggleVisible("years-modal") }>{currentYearNumber}</div>
+                        <div className='year gradient-background' onClick={ ()=>toggleVisible("years-modal") }>{currentYearNumber}</div>
                         <div className={ visibleYears === true ? 'year-modal visible' : 'year-modal invisible'}>
                             <ul>
                                 { range.map((year)=>{
-                                    return <li key={ year } onClick={ ()=>changeYear(year) }>{ year }</li>
+                                    return <li className="gradient-background" key={ year } onClick={ ()=>changeYear(year) }>{ year }</li>
                                 }) }
                             </ul>
                         </div>
@@ -194,9 +194,8 @@ const Calendar = (props)=>{
                             {daysGrid}
                     </div> 
 
-                    <div className='appointments'>
-                        
-                    </div>
+                    <button onClick={ handleTurnClick }>Crear Turno</button>
+
             </div>
         );
 }

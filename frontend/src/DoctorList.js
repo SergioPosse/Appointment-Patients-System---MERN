@@ -1,5 +1,5 @@
 import React,{ useState, useEffect, useRef} from 'react';
-import './DoctorList.css';
+import './DoctorList.scss';
 
 const DoctorList = (props) =>{
   console.log("render doctorlist");

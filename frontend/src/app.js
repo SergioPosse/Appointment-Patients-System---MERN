@@ -1,17 +1,26 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import './App.css';
+import './App.scss';
 import moment from 'moment';
 
 import DoctorList from './DoctorList'
 import PatientList from './PatientList'
 import Calendar from './Calendar'
+import Appointments from './Appointments'
+
+import ReactCardFlip from 'react-card-flip';
+
 
 function App() {
   console.log("render app");
 
+  const [classPopUp, setClassPopUp] = useState("");
+  const [isFlipped,setIsFlipped]=useState(false);
+
+  const dateRef = useRef("");
+
   const [patients, setPatients] = useState([]);
-  // const [appointments, setAppointments] = useState([]);
+  const [appointments, setAppointments] = useState([]);
 
   const [doctors, setDoctors] = useState([]);
   
@@ -49,18 +58,28 @@ function App() {
           })
     },[])
 
-    // useEffect(()=>{
-    //   console.log("render useffect in app appointments")
+    useEffect(()=>{
+      console.log("render useffect in app appointments")
 
-    //       axios
-    //       .get('http://localhost:666/medical-care-rioiv/appointments')
-    //       .then(res=>{
-    //         setAppointments(res.data)
-    //       })
-    // },[])
+          axios
+          .get('http://localhost:666/medical-care-rioiv/appointments')
+          .then(res=>{
+            setAppointments(res.data)
+          })
+    },[])
 
-    const getDayClicked = (date)=>{
+    const getDayClicked = async (date)=>{
+        console.log("getDayClicked  ")
+        setClassPopUp("pop-up")
         setSelectedDate(date);
+        let oldClass = dateRef.current.className;
+        dateRef.current.className = dateRef.current.className.concat(" pop-up2");
+        await setTimeout(()=>{dateRef.current.className = oldClass},500);
+        
+    }
+
+    const handleTurnClick = ()=>{
+      setIsFlipped(!isFlipped);
     }
 
 
@@ -85,18 +104,26 @@ function App() {
                           selectedPatient
                          }
                     </div>
-                    <div className="selected-date">{ 
+                    <div ref={dateRef}className={ classPopUp } className="selected-date">{ 
                           selectedDate
                          }
                     </div>
                      
                 </div>
                 <div className='schedule'>
-                        <Calendar description={ selectedDoctor } getDayClicked={ getDayClicked } />
+                  
+                    <ReactCardFlip isFlipped={ isFlipped } flipDirection="vertical">
+                      <Calendar handleTurnClick={ handleTurnClick } description={ selectedDoctor } getDayClicked={ getDayClicked } >
+                      </Calendar>
+                      <Appointments handleTurnClick={ handleTurnClick } appointments={ appointments }>
+                      </Appointments>
+                    </ReactCardFlip>
                 </div>
             </div>
+            
 
             </div>
+
         </>
         )
     }
