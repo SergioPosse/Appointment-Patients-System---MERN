@@ -7,6 +7,7 @@ import { get_month_esp_eng, get_esp_day }  from './translate_esp_eng'
 const Calendar = (props)=>{
 
             const { description, getDayClicked, handleTurnClick, doctorRef} = props;
+            const [isDisabled,setIsDisabled] = useState("");
 
             const yearsRange = useRef([]);
             const currentMonth = useRef('Ninguno');
@@ -193,9 +194,10 @@ const Calendar = (props)=>{
                     <div className='days-grid'>
                             {daysGrid}
                     </div> 
-
-                    <button onClick={ handleTurnClick }>Crear Turno</button>
-
+                    <div style={{display:"flex"}}>
+                    <button disabled={ !isDisabled }id="createAppointment" className="disabled" onClick={ handleTurnClick }>Crear Turno</button>
+                    <button style={{backgroundColor:"#bf8040"}}id="flipToList" className="" onClick={ handleTurnClick }>Ver Todos Los Turnos</button>
+                    </div>
             </div>
         );
 }

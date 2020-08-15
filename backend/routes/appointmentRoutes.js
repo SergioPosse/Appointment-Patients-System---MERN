@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const { getAppointments,
      createAppointment,
-      getAppointment,
+      getAppointmentByDoctor,
        deleteAppointment,
         editAppointment } = require('../controllers/appointmentController');
 
@@ -13,7 +13,7 @@ router.route('/new')
     .post(createAppointment)
 
 router.route('/:id')
-    .get(getAppointment)
+    .get(getAppointmentByDoctor)
     .delete(deleteAppointment)
     .put(editAppointment)
 

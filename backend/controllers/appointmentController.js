@@ -8,15 +8,22 @@ const { MongooseDocument } = require('mongoose');
 const appointmentController = {};
 
 appointmentController.getAppointments = async (req,res) => { 
-    const appointments = await Appointment.find({})
+    const appointments = await Appointment.find({}).populate('doctor').populate('patient');
     console.log("server: "+appointments)
     res.json(appointments);
 };
 
-appointmentController.getAppointment = (req,res) => { 
-    const id = req.params.id;
-    const appointment = Appointment.findById(id);
-    res.json( appointment )
+appointmentController.getAppointmentByDoctor = async(req,res) => { 
+Appointment.
+  find({ doctor: req.params.id }).
+  populate('author').
+  populate('patient').
+  exec(function (err, appointment) {
+    if (err) return handleError(err);
+    res.json(appointment)
+  });
+
+
 };
 
 appointmentController.createAppointment = async (req,res) => { 

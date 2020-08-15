@@ -95,8 +95,18 @@
 }
 
 .success{
-    background-color: rgb(0, 92, 0) !important;
+    background-color: rgb(97, 236, 4) !important;
 
+}
+
+.disabled 
+{
+    cursor: not-allowed;
+    background-color: rgb(229, 229, 229) !important;
+}
+.disabled > * 
+{
+    pointer-events:none;
 }
 
 .pop-up2{
@@ -117,10 +127,10 @@
     }
   
     30%, 50%, 70% {
-      transform: translate3d(-4px, 0, 0);
+      transform: translate3d(-5px, 0, 0);
     }
   
     40%, 60% {
-      transform: translate3d(4px, 0, 0);
+      transform: translate3d(5px, 0, 0);
     }
   }
