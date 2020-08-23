@@ -6,27 +6,23 @@ import { get_month_esp_eng, get_esp_day }  from './translate_esp_eng'
 
 const Calendar = (props)=>{
 
-            const { description, getDayClicked, handleTurnClick, doctorRef} = props;
-            const [isDisabled,setIsDisabled] = useState("");
-
+            const { createAppointment, isDisabled, selectedDoctor, getDayClicked, handleTurnClick, doctorRef} = props;
             const yearsRange = useRef([]);
             const currentMonth = useRef('Ninguno');
+            const disabledButton = useRef();
 
 
             const range = yearsRange.current;
 
             useMemo(()=>{
-                console.log("render yearsrange");
                 var range = [];
                 for (var i = 1980; i <= moment().format("YYYY"); i++) {
                     range.push(i);
                 }
                 yearsRange.current = range;
-                console.log("yearsRange: "+yearsRange.current)
             },[])
 
             useMemo(()=>{
-                console.log("render translate months names");
                 let result = get_month_esp_eng( moment().format("MMMM") );
                 currentMonth.current = result.mes;
             },[]);
@@ -59,7 +55,6 @@ const Calendar = (props)=>{
 
 
     const searchDayStart = async ()=>{
-        console.log("render searchdaystart");
          let myDate = `${currentYearNumber}-${currentMonthNumber}-01`;
          var daystart = moment(myDate).format("dddd");
         //  console.log("daystart var: "+daystart);
@@ -68,7 +63,6 @@ const Calendar = (props)=>{
      }
 
      const process_days = async ()=>{
-        console.log("render process days");
         let days = [];
         let start = undefined;
         let daystart = dayStart;
@@ -119,7 +113,6 @@ const Calendar = (props)=>{
         
 
     const toggleVisible = (modal)=>{
-        console.log("render togglevisible");
         if(modal==="months-modal"){
             setVisibleMonths(!visibleMonths);
         }
@@ -129,7 +122,6 @@ const Calendar = (props)=>{
     }
 
     const  changeMonth = async (value)=>{
-        console.log("render changemonth");
         alert("Atencion: Se reinicio primer dia del mes");
         let month_data = get_month_esp_eng(value);
         let date = `${currentYearNumber}-${month_data.mesNumero}-01`;
@@ -144,7 +136,6 @@ const Calendar = (props)=>{
     }
 
     const changeYear = async (value)=>{
-        console.log("render change year");
         alert("Atencion: Se reinicio primer dia del mes");
         getDayClicked(`${1}-${currentMonthNumber}-${value}`);
         setSelectedDay(1);
@@ -161,7 +152,6 @@ const Calendar = (props)=>{
 
 
     useEffect(()=>{
-        console.log("render useffect in calendar depends currentday startcol daystart currentmonth currentyearnumber daysinmonth currentmonthnumber");
         searchDayStart();//fix error cause function not wait longer for update the state
         process_days();
 
@@ -178,7 +168,9 @@ const Calendar = (props)=>{
                                 }) }
                             </ul>
                         </div>
-                            <div ref={ doctorRef } className='description decoration-gold'>{ description }</div>
+
+                            <div ref={ doctorRef } className='selected-doctor'>{ selectedDoctor.text }</div>
+
                         <div className='year gradient-background' onClick={ ()=>toggleVisible("years-modal") }>{currentYearNumber}</div>
                         <div className={ visibleYears === true ? 'year-modal visible' : 'year-modal invisible'}>
                             <ul>
@@ -195,8 +187,8 @@ const Calendar = (props)=>{
                             {daysGrid}
                     </div> 
                     <div style={{display:"flex"}}>
-                    <button disabled={ !isDisabled }id="createAppointment" className="disabled" onClick={ handleTurnClick }>Crear Turno</button>
-                    <button style={{backgroundColor:"#bf8040"}}id="flipToList" className="" onClick={ handleTurnClick }>Ver Todos Los Turnos</button>
+                    <button ref={ disabledButton } disabled={ isDisabled } id="createAppointment" className={isDisabled? "disabled" : ""} onClick={ createAppointment }>Crear Turno</button>
+                    <button style={{backgroundColor:"#bf8040"}} id="flipToList" className="" onClick={ handleTurnClick }>Ver Todos Los Turnos</button>
                     </div>
             </div>
         );

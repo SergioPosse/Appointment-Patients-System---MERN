@@ -3,19 +3,18 @@ import './Appointments.scss';
 import moment from 'moment';
 
 const Appointments = (props) =>{
-  console.log("render appointments");
   const { appointments, handleTurnClick } = props;
 
   
   const arrAppointments = appointments.map( (item)=>(
 
     <tr key={ item._id }>
-      <td key={ item._id }>{item.patient.name}</td>
-      <td key={ item.doctor }>{item.doctor.name}</td>
-      <td key={ item.doctor }>{item.description}</td>
-      <td key={ item.doctor }>{moment(item.acomplishDate).format("DD-MM-YYYY")}</td>
-      <td key={ item.state }>{moment(item.agreedDate).format("DD-MM-YYYY")}</td>
-      <td key={ item._id+item.state}>{ item.state? "Concluido" : "Pendiente" }</td>
+      <td key={ item._id+item.patient.name }>{item.patient.name}</td>
+      <td key={ item._id+item.doctor.name }>{item.doctor.name}</td>
+      <td key={ item._id+item.description }>{item.description}</td>
+      <td key={ item._id+item.acomplishDate }>{moment(item.acomplishDate).format("DD-MM-YYYY")}</td>
+      <td key={ item._id+item.agreedDate }>{moment(item.agreedDate).format("DD-MM-YYYY")}</td>
+      <td key={ item._id+item.state }>{ item.state? "Concluido" : "Pendiente" }</td>
     </tr>)
   )
 

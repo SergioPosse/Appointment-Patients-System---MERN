@@ -25,8 +25,15 @@
 }
 .patient-list{
     height:50%;
-
 }
+.patient-content{
+    display:flex;
+    flex-direction:column;
+}
+.marked-patient{
+    background-color: forestgreen;
+}
+
 .doctor-list{
     /* background-color:gray; */
     height:50%;
@@ -47,7 +54,7 @@
     flex:1;
     border-radius: 3%;
 }
-.selected-patient, .selected-date{
+.selected-patient, .selected-date, .selected-doctor{
     background-color:white;
     color:black;
     border:1px solid black;
@@ -76,29 +83,6 @@
     100%{background-position:74% 0%;opacity:30%;}
 }
 
-.pop-up{
-    animation: pop-up 0.8s;
-    background-color: orangered;
-    opacity: 50%;
-    animation-timing-function: ease;
-    align-self:center;
-    text-align:center;
-}
-
-@keyframes pop-up {
-    0%{text-align:center;width:36%;}
-    20%{width:37%;}
-    40%{width:38%;}
-    60%{width:39%;}
-    80%{width:40%;}
-    100%{width:41%;}
-}
-
-.success{
-    background-color: rgb(97, 236, 4) !important;
-
-}
-
 .disabled 
 {
     cursor: not-allowed;
@@ -109,20 +93,25 @@
     pointer-events:none;
 }
 
-.pop-up2{
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+.pop-up{
+    animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
-    background-color: rgb(61, 255, 103) !important;
+    background: rgb(236, 255, 61) !important;
     }
 
+.success{
+    background: rgb(31, 236, 4);
+
+}
+
 @keyframes shake {
-    10%, 90% {
+    10%, 100% {
       transform: translate3d(-1px, 0, 0);
     }
     
-    20%, 80% {
+    10%, 40% {
       transform: translate3d(2px, 0, 0);
     }
   
@@ -130,7 +119,7 @@
       transform: translate3d(-5px, 0, 0);
     }
   
-    40%, 60% {
+    10%, 50% {
       transform: translate3d(5px, 0, 0);
     }
   }

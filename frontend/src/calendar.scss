@@ -6,7 +6,7 @@
     background-color: navajowhite;
 }
 .selected-day{
-    background-color: aqua;
+    background-color: rgb(31, 236, 4);
 }
 .calendar-container{
     background-color: palevioletred;
@@ -56,21 +56,9 @@
     border: salmon 1px solid;
     
 }
-.month,.year,.description{
+.month,.year,.selected-doctor{
     width:35%;
     height:90%;
-
-}
-
-.decoration-gold{
-    border:2px solid gold;
-    background-color:white;
-    color: blacK;
-    font-weight: bold;
-    font-size:80%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
 
 }
 
