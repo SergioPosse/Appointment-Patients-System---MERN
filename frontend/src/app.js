@@ -105,6 +105,8 @@ function App() {
 
         return(
         <>
+        <div className="back-op">
+
         <div className="inner-container">
             <div className="wrapper-left">
                 <div className="doctor-list">
@@ -143,6 +145,8 @@ function App() {
                 </div>
             </div>
             
+        </div>
+
         </div>
         </>
         )

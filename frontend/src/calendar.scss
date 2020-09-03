@@ -71,17 +71,25 @@
 }
 .visible{
     visibility: visible;
+    animation: deelay 2s ease-in;
+    @keyframes deelay{
+        100%{visibility: hidden !important;}
+    }
 }
-
+.back-op{
+    width:100vw;
+    height:100vh;
+    z-index:50;
+    background-color:red;
+    opacity: 1;
+}
 .month-modal{
-    position:absolute;
-    top:12vh;
-    z-index:5;
+    position: absolute;
     background-color: coral;
-    text-align:center;
-    width:10vw;
+    width: 15%;
+    text-align: center;
     overflow-y:scroll;
-    height:50vh;
+    height:30vh;
 }
 .month-modal ul li:hover{
     background-color: cyan;
@@ -96,14 +104,12 @@
 
 .year-modal{
     position:absolute;
-    top:12vh;
-    left:65vw;
-    z-index:5;
-    width:10vw;
+    width:15%;
+    left:85%;
     background-color: coral;
     text-align:center;
     overflow-y:scroll;
-    height:50vh;
+    height:30vh;
 }
 .year-modal ul li:hover{
     background-color: cyan;

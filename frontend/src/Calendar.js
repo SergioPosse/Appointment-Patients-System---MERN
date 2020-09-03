@@ -11,6 +11,9 @@ const Calendar = (props)=>{
             const currentMonth = useRef('Ninguno');
             const disabledButton = useRef();
 
+            const modalMonthRef = useRef(null);
+            const modalYearRef = useRef(null);
+
 
             const range = yearsRange.current;
 
@@ -155,13 +158,33 @@ const Calendar = (props)=>{
         searchDayStart();//fix error cause function not wait longer for update the state
         process_days();
 
-    },[selectedDay,startCol,dayStart,currentMonth,currentYearNumber,daysInMonth,currentMonthNumber]);    
+    },[selectedDay,startCol,dayStart,currentMonth,currentYearNumber,daysInMonth,currentMonthNumber]);
+
+
+    useEffect(() => {
+
+        function handleClickOutside(event) {
+            if (modalMonthRef.current && !modalMonthRef.current.contains(event.target)) {
+                setVisibleMonths(false);
+            }
+            if (modalYearRef.current && !modalYearRef.current.contains(event.target)) {
+                setVisibleYears(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [modalYearRef,modalMonthRef]);
+
+
         return(
             <div className='calendar-container'>
                     <div className='top-bar'>
                         {/* <div className='month' onClick={ (e)=>this.changeMonth( this.state.currentMonth) } > */}
                         <div className='month gradient-background' onClick={ ()=>toggleVisible("months-modal") } >{currentMonth.current}</div>
-                        <div className={ visibleMonths === true ? 'month-modal visible' : 'month-modal invisible'}>
+                        <div ref={ modalMonthRef } className={ visibleMonths === true ? 'month-modal visible' : 'month-modal invisible'}>
                             <ul>
                                 { monthNames.map((month)=>{
                                     return <li className="gradient-background" key={ month } onClick={()=>changeMonth(month)}>{ month }</li>
@@ -172,7 +195,7 @@ const Calendar = (props)=>{
                             <div ref={ doctorRef } className='selected-doctor'>{ selectedDoctor.text }</div>
 
                         <div className='year gradient-background' onClick={ ()=>toggleVisible("years-modal") }>{currentYearNumber}</div>
-                        <div className={ visibleYears === true ? 'year-modal visible' : 'year-modal invisible'}>
+                        <div ref={ modalYearRef } className={ visibleYears === true ? 'year-modal visible' : 'year-modal invisible'}>
                             <ul>
                                 { range.map((year)=>{
                                     return <li className="gradient-background" key={ year } onClick={ ()=>changeYear(year) }>{ year }</li>
