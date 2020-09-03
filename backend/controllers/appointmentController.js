@@ -19,8 +19,9 @@ Appointment.
   populate('author').
   populate('patient').
   exec(function (err, appointment) {
-    if (err) return handleError(err);
-    res.json(appointment)
+
+        return res.json(appointment)
+ 
   });
 
 

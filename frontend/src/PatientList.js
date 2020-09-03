@@ -8,8 +8,8 @@ const PatientList = (props)=>{
     .filter((patient)=>{
         let search = searchedPatient;
         let reg = new RegExp("^"+search,"g");
-        console.log("escribiendo: "+reg);
-        console.log("comparado a: "+patient.dni);
+        // console.log("escribiendo: "+reg);
+        // console.log("comparado a: "+patient.dni);
         if (reg.test(patient.dni)){
           return patient
         }

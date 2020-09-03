@@ -26,8 +26,8 @@ function App() {
 
   const [doctors, setDoctors] = useState([]);
   
-  const [selectedDate, setSelectedDate] = useState({ text: moment().format("DD-MM-yyyy"), state: false } )
-  const [selectedDoctor, setSelectedDoctor] = useState({ text:"Doctor: Ninguno!", state: false } );
+  const [selectedDate, setSelectedDate] = useState({ id: null, text: moment().format("DD-MM-yyyy"), state: false } )
+  const [selectedDoctor, setSelectedDoctor] = useState({ id: null, text:"Doctor: Ninguno!", state: false } );
   const [selectedPatient, setSelectedPatient] = useState({text:"Ninguno!", state: false})
 
   const changeDoctor = async(data) => {
@@ -49,26 +49,31 @@ function App() {
           axios
             .get('http://localhost:666/medical-care-rioiv/doctors')
             .then(res=>{
-              setDoctors(res.data)
+              setDoctors(doctors => res.data)
             })
     },[])
+
+    
 
     useEffect(()=>{
           axios
           .get('http://localhost:666/medical-care-rioiv/patients')
           .then(res=>{
-            setPatients(res.data)//al actualizar con patients state usememo en patientlist component renderiza sino no
+            setPatients(patients => res.data);//al actualizar con patients state usememo en patientlist component renderiza sino no
             //porque use useMemo con dependencia de patientsp
           })
     },[])
 
-    useEffect(()=>{
-
-          axios
+    const loadAppointments = ()=>{
+      axios
           .get('http://localhost:666/medical-care-rioiv/appointments')
           .then(res=>{
             setAppointments(res.data)
           })
+    }
+
+    useEffect(()=>{
+          loadAppointments();
     },[])
 
     useEffect(()=>{
@@ -80,6 +85,8 @@ function App() {
 
     },[selectedDoctor,selectedPatient,selectedDate]);
 
+    
+
     const getDayClicked = async (date)=>{
         console.log("getDayClicked  ")
         setSelectedDate({ text: date, state: true } );
@@ -90,7 +97,28 @@ function App() {
     }
 
     const handleTurnClick = ()=>{
+      loadAppointments();
       setIsFlipped(!isFlipped);
+    }
+
+    const handleDateClick = async ()=>{
+        let query = 'http://localhost:666/medical-care-rioiv/appointments/'+selectedDoctor.id
+        let arrApp = []
+        axios
+        .get(query)
+        .then(res=>{
+            if(res.data.length>0){
+              res.data.map((item)=>{
+                let date1 = moment(item.acomplishDate).format("DD-MM-YYYY");
+                let date2 = moment(selectedDate.text).format("MM-DD-YYYY");
+                if(date1===date2){
+                    arrApp.push(item);
+                }
+              });
+            }
+            setAppointments(arrApp);
+        });
+        await setIsFlipped(!isFlipped);
     }
 
     const createAppointment = ()=>{
@@ -122,8 +150,10 @@ function App() {
                           selectedPatient.text 
                          }
                     </div>
-                    <div ref={ dateRef } className="selected-date">{ 
+                    <div ref={ dateRef } className="selected-date">{<> 
                           <span value={ selectedDate.text }>{ selectedDate.text }</span>
+                          <button onClick={ handleDateClick }>Ver</button>
+                          </>
                          }
                     </div>
                 </div>
@@ -135,7 +165,8 @@ function App() {
                         doctorRef={ doctorRef } 
                         selectedDoctor={ selectedDoctor } 
                         getDayClicked={ getDayClicked } 
-                        createAppointment={ createAppointment }>
+                        createAppointment={ createAppointment }
+                        >
                       </Calendar>
                       <Appointments 
                         handleTurnClick={ handleTurnClick } 

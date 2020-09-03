@@ -5,6 +5,17 @@
 .current-day{
     background-color: navajowhite;
 }
+.isAppo{
+}
+.count{
+    border-radius: 50%;
+    background-color: royalblue;
+    color:white;
+    font-size:1em;
+    position: absolute;
+    width:20px;
+    height:20px;
+}
 .selected-day{
     background-color: rgb(31, 236, 4);
 }
@@ -80,7 +91,7 @@
     width:100vw;
     height:100vh;
     z-index:50;
-    background-color:red;
+    background-color:rgb(169, 200, 236);
     opacity: 1;
 }
 .month-modal{

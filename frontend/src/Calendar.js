@@ -1,21 +1,26 @@
 import React, {useState, useEffect, useMemo, useRef} from 'react';
 import moment from 'moment';
-
+import axios from 'axios';
 import './calendar.scss';
 import { get_month_esp_eng, get_esp_day }  from './translate_esp_eng'
 
 const Calendar = (props)=>{
-
             const { createAppointment, isDisabled, selectedDoctor, getDayClicked, handleTurnClick, doctorRef} = props;
             const yearsRange = useRef([]);
             const currentMonth = useRef('Ninguno');
             const disabledButton = useRef();
-
             const modalMonthRef = useRef(null);
             const modalYearRef = useRef(null);
-
-
             const range = yearsRange.current;
+            const [appointmentsByDoctor, setAppointmentsByDoctor] = useState([]);
+
+            useEffect(()=>{
+                let query = 'http://localhost:666/medical-care-rioiv/appointments/'+selectedDoctor.id
+                axios
+                .get(query)
+                .then(res=>{
+                    setAppointmentsByDoctor(res.data);})
+                },[selectedDoctor])
 
             useMemo(()=>{
                 var range = [];
@@ -30,12 +35,9 @@ const Calendar = (props)=>{
                 currentMonth.current = result.mes;
             },[]);
 
-
             //useref o usememo
             const [visibleMonths, setVisibleMonths] = useState(false);
             const [visibleYears, setVisibleYears] = useState(false);
-
-
 
             //aux states for calculate daysgrid
             const [dayStart, setDayStart] = useState("");
@@ -54,38 +56,35 @@ const Calendar = (props)=>{
             const [currentMonthNumber,setCurrentMonthNumber] = useState(()=>moment().format("MM"));
             const [currentYearNumber,setCurrentYearNumber] = useState(()=>moment().format("YYYY"));
     
-               
-
-
     const searchDayStart = async ()=>{
          let myDate = `${currentYearNumber}-${currentMonthNumber}-01`;
          var daystart = moment(myDate).format("dddd");
-        //  console.log("daystart var: "+daystart);
          await setDayStart(daystart);
-        //  console.log("daystart: "+dayStart);
      }
 
      const process_days = async ()=>{
-        let days = [];
-        let start = undefined;
-        let daystart = dayStart;
-        dayNames.map(async (day)=>{ 
-            if(day===daystart){
-                switch(daystart){
-                    case 'Monday': start = 1;break;
-                    case 'Tuesday': start = 2;break;
-                    case 'Wednesday': start = 3;break;
-                    case 'Thursday': start = 4;;break;
-                    case 'Friday': start = 5;break;
-                    case 'Saturday': start = 6;break;
-                    case 'Sunday': start = 0;break;
-                    default: break;
+
+            let days = [];
+            let start = undefined;
+            let daystart = dayStart;
+            dayNames.map(async (day)=>{ 
+                if(day===daystart){
+                    switch(daystart){
+                        case 'Monday': start = 1;break;
+                        case 'Tuesday': start = 2;break;
+                        case 'Wednesday': start = 3;break;
+                        case 'Thursday': start = 4;;break;
+                        case 'Friday': start = 5;break;
+                        case 'Saturday': start = 6;break;
+                        case 'Sunday': start = 0;break;
+                        default: break;
+                    }
+                    await setStarCol(start);
+                    
                 }
-                await setStarCol(start);
-                
-            }
-            return null;
-        });
+                return null;
+            });
+
             for(let i=1; i<=daysInMonth+1; i++){
                 if (i<startCol+1){
                     days.push(<div className="blank" key={i+"blnk"}></div>);
@@ -93,23 +92,36 @@ const Calendar = (props)=>{
                
             }
             for(let i=1; i<=daysInMonth; i++){
-                    if(i===parseInt(currentDay) && parseInt(currentYearNumber)===parseInt(moment().format("YYYY"))
-                    && parseInt(currentMonthNumber)===parseInt(moment().format("MM"))
-                    ){
-                        days.push(<div className="gradient-background current-day day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) }key={i} value={i}>{i}</div>);
-                    }
-                    else{
-                        if(i===parseInt(selectedDay)){
-                            days.push(<div className="gradient-background selected-day day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}</div>);
-
+                 let count = 0;
+                 if(appointmentsByDoctor){
+                     let countAppo = 0
+                    appointmentsByDoctor.map((appo)=>{
+                        
+                        let date1 = moment(appo.acomplishDate).format("DD-MM-YYYY");
+                        let date2 = moment(currentYearNumber+"/"+currentMonthNumber+"/"+i).format("DD-MM-YYYY");
+                        if(date1===date2){
+                            countAppo=countAppo+1;
                         }
-                        else{
-                            days.push(<div className="gradient-background day" onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}</div>);
-
-                        }
-                    }
+                        count=countAppo;
+                    })
+                 }
+                let customClass = "gradient-background day";
+                if(i===parseInt(currentDay) && parseInt(currentYearNumber)===parseInt(moment().format("YYYY"))
+                && parseInt(currentMonthNumber)===parseInt(moment().format("MM"))){
+                    customClass = customClass+" current-day"
+                }
+                if(i===parseInt(selectedDay)){
+                    customClass = customClass+" selected-day"
+                }
+                if(count>0){
+                    customClass = customClass+" isAppo"
+                    days.push(<div className={ customClass } onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}<span className="count">{count}</span></div>);
+                }
+                else{
+                    days.push(<div className={ customClass } onClick={ ()=>handleDayClick({day: i, month: currentMonthNumber, year: currentYearNumber}) } key={i} value={i}>{i}</div>);
+                }
             }
-            await setDaysGrid(days);            
+            await setDaysGrid(days);
     }
 
   
@@ -158,16 +170,15 @@ const Calendar = (props)=>{
         searchDayStart();//fix error cause function not wait longer for update the state
         process_days();
 
-    },[selectedDay,startCol,dayStart,currentMonth,currentYearNumber,daysInMonth,currentMonthNumber]);
+    },[appointmentsByDoctor,selectedDoctor,selectedDay,startCol,dayStart,currentMonth,currentYearNumber,daysInMonth,currentMonthNumber]);
 
 
     useEffect(() => {
-
         function handleClickOutside(event) {
-            if (modalMonthRef.current && !modalMonthRef.current.contains(event.target)) {
-                setVisibleMonths(false);
+            if (modalMonthRef.current && !modalMonthRef.current.contains(event.target)){
+                    setVisibleMonths(false);
             }
-            if (modalYearRef.current && !modalYearRef.current.contains(event.target)) {
+            if (modalYearRef.current && !modalYearRef.current.contains(event.target)){
                 setVisibleYears(false);
             }
         }
@@ -176,7 +187,7 @@ const Calendar = (props)=>{
             // Unbind the event listener on clean up
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [modalYearRef,modalMonthRef]);
+    },[modalYearRef,modalMonthRef]);
 
 
         return(
@@ -216,5 +227,4 @@ const Calendar = (props)=>{
             </div>
         );
 }
-
 export default Calendar
