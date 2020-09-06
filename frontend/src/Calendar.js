@@ -201,22 +201,22 @@ const Calendar = (props)=>{
                         {/* <div className='month' onClick={ (e)=>this.changeMonth( this.state.currentMonth) } > */}
                         <div className='month gradient-background' onClick={ ()=>toggleVisible("months-modal") } >{currentMonth.current}</div>
                         <div ref={ modalMonthRef } className={ visibleMonths === true ? 'month-modal visible' : 'month-modal invisible'}>
-                            <ul>
+                            
                                 { monthNames.map((month)=>{
-                                    return <li className="gradient-background" key={ month } onClick={()=>changeMonth(month)}>{ month }</li>
+                                    return <div className="touch gradient-background" key={ month } onClick={()=>changeMonth(month)}>{ month }</div>
                                 }) }
-                            </ul>
+                            
                         </div>
 
                             <div ref={ doctorRef } className='selected-doctor'>{ selectedDoctor.text }</div>
 
                         <div className='year gradient-background' onClick={ ()=>toggleVisible("years-modal") }>{currentYearNumber}</div>
                         <div ref={ modalYearRef } className={ visibleYears === true ? 'year-modal visible' : 'year-modal invisible'}>
-                            <ul>
+                           
                                 { range.map((year)=>{
-                                    return <li className="gradient-background" key={ year } onClick={ ()=>changeYear(year) }>{ year }</li>
+                                    return <div className="touch gradient-background" key={ year } onClick={ ()=>changeYear(year) }>{ year }</div>
                                 }) }
-                            </ul>
+                           
                         </div>
                     </div>
                     <div className='days-row'>
@@ -226,8 +226,8 @@ const Calendar = (props)=>{
                             {daysGrid}
                     </div> 
                     <div style={{display:"flex"}}>
-                    <button ref={ disabledButton } disabled={ isDisabled } id="createAppointment" className={isDisabled? "disabled" : ""} onClick={ createAppointment }>Crear Turno</button>
-                    <button style={{backgroundColor:"#bf8040"}} id="flipToList" className="" onClick={ handleTurnClick }>Ver Todos Los Turnos</button>
+                    <button ref={ disabledButton } disabled={ isDisabled } id="createAppointment" className={isDisabled? "babbly-button disabled" : "bubbly-button"} onClick={ createAppointment }>Crear Turno</button>
+                    <button className="bubbly-button" id="flipToList" onClick={ handleTurnClick }>Ver Todos Los Turnos</button>
                     </div>
             </div>
         );

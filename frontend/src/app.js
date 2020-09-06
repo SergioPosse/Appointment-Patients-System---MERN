@@ -22,15 +22,30 @@ function App() {
   const [ minute, setMinute] = useState("00");
   const [description, setDescription] = useState("");
 
+  //bubbly-button
+  const animateButton = (e)=>{
+    //reset animation
+    e.target.classList.remove('animate');
+    e.target.classList.add('animate');
+    setTimeout(function(){
+      e.target.classList.remove('animate');
+    },700);
+  };
+  
+  const bubblyButtons = document.getElementsByClassName("bubbly-button");
+  
+  for (var i = 0; i < bubblyButtons.length; i++) {
+    bubblyButtons[i].addEventListener('click', (e)=>animateButton(e), false);
+  }
   
   const selectHour = ()=>{
     let arr=[];
     for (let i=0;i<24;i++){
       if (i<10){
-        arr.push(<option value={"0"+i} onClick={ (e)=>setHour(e.target.value)}>{"0"+i}</option>);
+        arr.push(<option className="touch" key={i+"h"} value={"0"+i} onClick={ (e)=>setHour(e.target.value)}>{"0"+i}</option>);
       }
       else{
-        arr.push(<option value={i}>{i}</option>);
+        arr.push(<option className="touch" key={i+"h"} value={i}>{i}</option>);
       }
     }
     return arr;
@@ -39,10 +54,10 @@ function App() {
     let arr=[];
     for (let i=0;i<60;i++){
       if(i<10){
-        arr.push(<option value={"0"+i}>{"0"+i}</option>);
+        arr.push(<option className="touch" key={i+"m"} value={"0"+i}>{"0"+i}</option>);
       }
       else{
-        arr.push(<option value={i}>{i}</option>);
+        arr.push(<option className="touch" key={i+"m"} value={i}>{i}</option>);
       }
     }
     return arr;
@@ -175,7 +190,15 @@ function App() {
       .catch(e => {
         console.log("error al guardar turno: "+e);
       });
+      clearModalTime();
       setVisibleTimePicker(!visibleTimePicker);
+    }
+
+    const clearModalTime = ()=>{
+      setVisibleTimePicker(!visibleTimePicker);
+      setHour("00");
+      setMinute("00");
+      setDescription("");
     }
 
         return(
@@ -185,16 +208,17 @@ function App() {
         <div className="inner-container">
             <div id="modal-time-picker" className={ visibleTimePicker? "visible" : "invisible" }>
               <div className="timer" style={{ display: "flex", flexDirection: "row"}}>
-                <select value={hour} onChange={ (e)=>setHour(e.target.value)}>
+                <select className="touch" value={hour} onChange={ (e)=>setHour(e.target.value)}>
                   { selectHour() }
                 </select>
-                <select value={minute} onChange={ (e)=>setMinute(e.target.value)}>
+                :
+                <select className="touch" value={minute} onChange={ (e)=>setMinute(e.target.value)}>
                   { selectMinute() }
                 </select>
               </div>
-                <textarea name="description" value={ description } onChange={ (e)=>setDescription(e.target.value) }></textarea>
-                
-                <button style={{ height: "10%", fontSize: "0.9em" }}onClick={ confirmTime } >Confirmar Turno</button>
+              <textarea className="touch" name="description" value={ description } onChange={ (e)=>setDescription(e.target.value) }></textarea> 
+              <button className="touch" style={{ backgroundColor: "#84F26D", width:"75%", height: "10%", fontSize: "0.9em" }}onClick={ confirmTime } >Confirmar Turno</button>
+              <button className="touch" style={{ backgroundColor: "#EC7070", width:"75%",height: "10%", fontSize: "0.9em" }}onClick={ clearModalTime } >Cancelar</button>
             </div>
             <div className="wrapper-left">
                 <div className="doctor-list">
@@ -212,7 +236,7 @@ function App() {
                     </div>
                     <div ref={ dateRef } className="selected-date">{<> 
                           <span value={ selectedDate.text }>{ selectedDate.text }</span>
-                          <button onClick={ handleDateClick }>Ver</button>
+                          <button className="touch" onClick={ handleDateClick }>Ver</button>
                           </>
                          }
                     </div>

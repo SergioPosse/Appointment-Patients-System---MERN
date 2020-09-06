@@ -9,7 +9,7 @@
 }
 .count{
     border-radius: 50%;
-    background-color: royalblue;
+    background-color: rgb(172, 184, 219);
     color:white;
     font-size:1em;
     position: absolute;
@@ -20,7 +20,7 @@
     background-color: rgb(31, 236, 4);
 }
 .calendar-container{
-    background-color: palevioletred;
+    background-color: rgb(202, 233, 220);
     display: flex;
     flex-direction:column;
     height:100%;
@@ -99,20 +99,17 @@
     background-color: coral;
     width: 25%;
     display:flex;
+    flex-direction:column;
+    flex-wrap: nowrap;
     overflow-y:scroll;
+    overflow-x:hidden;
     height:70%;
     padding:0;
+    z-index:45;
 }
-
-ul{
-    list-style-type: none;
-    text-align:center;
-}
-.month-modal ul li:hover{
-    background-color: cyan;
-    color:black;
-    border:1px solid chartreuse;
-    cursor:pointer;
+.month-modal :nth-child(n){
+    border:none;
+    border-style: none;
 }
 
 .cursor-pointer{
@@ -122,17 +119,15 @@ ul{
 .year-modal{
     position:absolute;
     width:25%;
-    left:85%;
+    left:72%;
     background-color: coral;
     text-align:center;
     display:flex;
     padding:0;
     overflow-y:scroll;
     height:70%;
-}
-.year-modal ul li:hover{
-    background-color: cyan;
-    color:black;
-    border:1px solid chartreuse;
-    cursor:pointer;
+    flex-direction:column;
+    flex-wrap: nowrap;
+    overflow-x:hidden;
+    z-index:45;
 }

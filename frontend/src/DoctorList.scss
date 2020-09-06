@@ -9,7 +9,7 @@
 	text-align: center;
     overflow-y: scroll;
     overflow-x: hidden;
-    font-size: 0.8vw;
+    font-size: 1vw;
     box-shadow: 0 0 0 1px cadetblue;
 }
 .content{
@@ -36,6 +36,7 @@ table tr{
     font-size: 0.9em;
 	background-color: pink;
     color: black;
+    height:20px !important;
 }
 table tr:hover{
     cursor: pointer;
