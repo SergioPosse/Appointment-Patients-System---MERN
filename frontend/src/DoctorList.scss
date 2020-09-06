@@ -7,10 +7,13 @@
     grid-auto-rows: 10px;
     grid-gap: 10px;
 	text-align: center;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
     font-size: 1vw;
     box-shadow: 0 0 0 1px cadetblue;
+    border-radius:3%;
+    box-shadow: 0 6px 50px rgba(224, 99, 208, 0.5);
+
 }
 .content{
     display: flex;
@@ -20,17 +23,17 @@
 table{
     text-align: center;
     height:auto;
-    border:1px solid black;
     table-layout: fixed;
     width:90%;
+    overflow-y:auto;
 }
-table *{
-    border:0.30px solid rebeccapurple;
+
+table thead{
+    color:rgb(0, 0, 0);
 }
 table thead th{
-	background-color:olivedrab;
-    color:white;
-    opacity: 50%;
+	background:rgb(255, 255, 255);
+
 }
 table tr{
     font-size: 0.9em;

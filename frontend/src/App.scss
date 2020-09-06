@@ -54,7 +54,6 @@ $baby-blue: #f8faff;
     height:20%;
 }
 .profile-header{
-    background-color:darkkhaki;
     height:10%;
     border-radius:3%;
     display: flex;
@@ -71,11 +70,15 @@ $baby-blue: #f8faff;
     width:50%;
     text-align: center;
     padding:1%;
+    box-shadow: 0 6px 50px rgba(136, 209, 18, 0.5);
+
 }
 .selected-date{
     display:flex;
     align-items: center;
     justify-items: center;
+    box-shadow: 0 6px 50px rgba(136, 209, 18, 0.5);
+
 }
 
 .cursor-pointer:hover{
@@ -151,7 +154,9 @@ $baby-blue: #f8faff;
     flex-direction:column;
     text-align:center;
     align-content: center;
-    align-items: center;    
+    align-items: center;
+    box-shadow: 0 6px 50px rgba(255, 0, 130, 0.5);
+    border-radius:5%;    
   }
   #modal-time-picker input,label{
     text-align:center;

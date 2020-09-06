@@ -217,8 +217,8 @@ function App() {
                 </select>
               </div>
               <textarea className="touch" name="description" value={ description } onChange={ (e)=>setDescription(e.target.value) }></textarea> 
-              <button className="touch" style={{ backgroundColor: "#84F26D", width:"75%", height: "10%", fontSize: "0.9em" }}onClick={ confirmTime } >Confirmar Turno</button>
-              <button className="touch" style={{ backgroundColor: "#EC7070", width:"75%",height: "10%", fontSize: "0.9em" }}onClick={ clearModalTime } >Cancelar</button>
+              <button className="touch" style={{ borderRadius:"5%",backgroundColor: "#84F26D", width:"75%", height: "10%", fontSize: "0.9em" }}onClick={ confirmTime } >Confirmar Turno</button>
+              <button className="touch" style={{ borderRadius:"5%",backgroundColor: "#EC7070", width:"75%",height: "10%", fontSize: "0.9em" }}onClick={ clearModalTime } >Cancelar</button>
             </div>
             <div className="wrapper-left">
                 <div className="doctor-list">
@@ -236,7 +236,7 @@ function App() {
                     </div>
                     <div ref={ dateRef } className="selected-date">{<> 
                           <span value={ selectedDate.text }>{ selectedDate.text }</span>
-                          <button className="touch" onClick={ handleDateClick }>Ver</button>
+                          <button className="touch button-fancy" onClick={ handleDateClick }>Ver</button>
                           </>
                          }
                     </div>

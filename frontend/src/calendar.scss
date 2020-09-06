@@ -5,13 +5,11 @@
 .current-day{
     background-color: navajowhite;
 }
-.isAppo{
-}
 .count{
     border-radius: 50%;
-    background-color: rgb(172, 184, 219);
+    background-color: rgb(63, 107, 236);
     color:white;
-    font-size:1em;
+    font-size:0.8em;
     position: absolute;
     width:20px;
     height:20px;
@@ -20,7 +18,7 @@
     background-color: rgb(31, 236, 4);
 }
 .calendar-container{
-    background-color: rgb(202, 233, 220);
+    background-color: rgb(10, 199, 120);
     display: flex;
     flex-direction:column;
     height:100%;
@@ -29,7 +27,7 @@
     display: flex;
     flex:1;
     justify-content: space-between;
-    background-color:gray;
+    background-color:rgb(155, 185, 190);
     max-height:10% !important;
     text-align: center;
 }
@@ -50,7 +48,7 @@
     flex:1;
     display: grid;
     grid-template-columns: repeat(7,1fr);
-    background-color: darkolivegreen;
+    background-color: rgb(182, 155, 192);
     column-gap:2px;
     row-gap:2px; 
 }
@@ -73,6 +71,17 @@
 
 }
 
+.month, .year{
+    background-color:palevioletred;
+    border-radius:5%;
+    cursor:pointer;
+}
+
+.button-fancy{
+    background-color:palevioletred;
+    border-radius:5% !important;
+    cursor:pointer;
+}
 .month:hover,.year:hover, .day:hover{
     background-color:rgb(171, 95, 247);
     cursor: pointer;
