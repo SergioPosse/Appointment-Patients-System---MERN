@@ -13,14 +13,13 @@ import ReactCardFlip from 'react-card-flip';
 
 function App() {
   console.log("render app");
-  moment.tz.setDefault("America/Sao_Paulo");
 
   const [isFlipped,setIsFlipped]=useState(false);
   const [isDisabled, setIsDisabled]=useState(true);
 
   const [visibleTimePicker,setVisibleTimePicker] = useState(false);
-  const [hour,setHour] = useState(0);
-  const [ minute, setMinute] = useState(0);
+  const [hour,setHour] = useState("00");
+  const [ minute, setMinute] = useState("00");
   const [description, setDescription] = useState("");
 
   
@@ -107,7 +106,7 @@ function App() {
     }
 
     useEffect(()=>{
-          loadAppointments();
+         loadAppointments();
     },[])
 
     useEffect(()=>{
@@ -143,9 +142,8 @@ function App() {
         .then(res=>{
             if(res.data.length>0){
               res.data.map((item)=>{
-                let date1 = moment.utc(item.acomplishDate).tz("America/Sao_Paulo").format("YYYY-MM-DD");
-                let date2 = moment.utc(`${selectedDate.date.year}-${selectedDate.date.month}-${selectedDate.date.day}`).tz("America/Sao_Paulo").format("YYYY-MM-DD");
-                console.log("click: "+date1);
+                let date1 = moment(item.acomplishDate.slice(0,10)).format("YYYY-MM-DD");
+                let date2 = moment(`${selectedDate.date.year}-${selectedDate.date.month}-${selectedDate.date.day}`).format("YYYY-MM-DD");
                 if(date1===date2){
                     arrApp.push(item);
                 }
@@ -154,7 +152,6 @@ function App() {
             setAppointments(arrApp);
         });
         await setIsFlipped(!isFlipped);
-        console.log(arrApp);  
     }
 
     const createAppointment = ()=>{
@@ -162,26 +159,23 @@ function App() {
 
     }
 
-    const confirmTime = async()=>{
+    const confirmTime = ()=>{
       let time = hour+":"+minute;
-      console.log(selectedDate.text);
-      console.log(time);
-      let date = moment.tz(selectedDate.text, "DD-MM-YYYY","America/Sao_Paulo").format("YYYY-MM-DD")
-      console.log("date_ "+date);
+      let date = moment(selectedDate.text, "DD-MM-YYYY").format("YYYY-MM-DD")
       let body = {
-        patient: selectedPatient.id,
-        doctor: selectedDoctor.id,
-        acomplishDate: date,
-        description: description,
-        time: time
-    }
+            patient: selectedPatient.id,
+            doctor: selectedDoctor.id,
+            acomplishDate: date,
+            description: description,
+            time: time
+            }
       axios.post('http://localhost:666/medical-care-rioiv/appointments/new', body).then(response => {
-        console.log(response);
-    }).catch(e => {
-        console.log("error al guardar: "+e);
-    });
-    await setVisibleTimePicker(!visibleTimePicker);
-
+        console.log("Turno guardado");
+      })
+      .catch(e => {
+        console.log("error al guardar turno: "+e);
+      });
+      setVisibleTimePicker(!visibleTimePicker);
     }
 
         return(
@@ -232,6 +226,7 @@ function App() {
                         selectedDoctor={ selectedDoctor } 
                         getDayClicked={ getDayClicked } 
                         createAppointment={ createAppointment }
+                        visibleTimePicker={ visibleTimePicker }
                         >
                       </Calendar>
                       <Appointments 

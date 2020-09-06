@@ -5,7 +5,7 @@ import './calendar.scss';
 import { get_month_esp_eng, get_esp_day }  from './translate_esp_eng'
 
 const Calendar = (props)=>{
-            const { createAppointment, isDisabled, selectedDoctor, getDayClicked, handleTurnClick, doctorRef} = props;
+            const { visibleTimePicker, createAppointment, isDisabled, selectedDoctor, getDayClicked, handleTurnClick, doctorRef} = props;
             const yearsRange = useRef([]);
             const currentMonth = useRef('Ninguno');
             const disabledButton = useRef();
@@ -13,7 +13,6 @@ const Calendar = (props)=>{
             const modalYearRef = useRef(null);
             const range = yearsRange.current;
             const [appointmentsByDoctor, setAppointmentsByDoctor] = useState([]);
-            moment.tz.setDefault("America/Sao_Paulo");
 
             useEffect(()=>{
                 let query = 'http://localhost:666/medical-care-rioiv/appointments/'+selectedDoctor.id
@@ -21,7 +20,7 @@ const Calendar = (props)=>{
                 .get(query)
                 .then(res=>{
                     setAppointmentsByDoctor(res.data);})
-                },[selectedDoctor])
+                },[visibleTimePicker,selectedDoctor])
 
             useMemo(()=>{
                 var range = [];
@@ -99,9 +98,9 @@ const Calendar = (props)=>{
                     appointmentsByDoctor.map((appo)=>{
                         console.log("acom: "+appo.acomplishDate)
                         
-                        let date1 = moment.utc(appo.acomplishDate).tz("America/Sao_Paulo").format();
+                        let date1 = moment(appo.acomplishDate.slice(0,10)).format();
                         console.log("c-date1: "+date1);
-                        let date2 = moment.utc(currentYearNumber+"/"+currentMonthNumber+"/"+i).tz("America/Sao_Paulo").format();
+                        let date2 = moment(currentYearNumber+"-"+currentMonthNumber+"-"+i).format();
                         console.log("c-date2: "+date2);
                         if(date1===date2){
                             countAppo=countAppo+1;
