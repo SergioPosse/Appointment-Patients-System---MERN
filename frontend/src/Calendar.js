@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useMemo, useRef} from 'react';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import axios from 'axios';
 import './calendar.scss';
 import { get_month_esp_eng, get_esp_day }  from './translate_esp_eng'
@@ -13,6 +13,7 @@ const Calendar = (props)=>{
             const modalYearRef = useRef(null);
             const range = yearsRange.current;
             const [appointmentsByDoctor, setAppointmentsByDoctor] = useState([]);
+            moment.tz.setDefault("America/Sao_Paulo");
 
             useEffect(()=>{
                 let query = 'http://localhost:666/medical-care-rioiv/appointments/'+selectedDoctor.id
@@ -49,7 +50,7 @@ const Calendar = (props)=>{
             
             //update anytime that changes dates
             const [currentDay,setCurrentDay] = useState(()=>moment().format("D"));
-            const [selectedDay, setSelectedDay] = useState(null);
+            const [selectedDay, setSelectedDay] = useState();
             
             const [daysInMonth,setDaysInMonth] = useState(()=>moment().daysInMonth());
             const [daysGrid,setDaysGrid] = useState([]);
@@ -96,9 +97,12 @@ const Calendar = (props)=>{
                  if(appointmentsByDoctor){
                      let countAppo = 0
                     appointmentsByDoctor.map((appo)=>{
+                        console.log("acom: "+appo.acomplishDate)
                         
-                        let date1 = moment(appo.acomplishDate).format("DD-MM-YYYY");
-                        let date2 = moment(currentYearNumber+"/"+currentMonthNumber+"/"+i).format("DD-MM-YYYY");
+                        let date1 = moment.utc(appo.acomplishDate).tz("America/Sao_Paulo").format();
+                        console.log("c-date1: "+date1);
+                        let date2 = moment.utc(currentYearNumber+"/"+currentMonthNumber+"/"+i).tz("America/Sao_Paulo").format();
+                        console.log("c-date2: "+date2);
                         if(date1===date2){
                             countAppo=countAppo+1;
                         }
@@ -136,40 +140,42 @@ const Calendar = (props)=>{
         }
     }
 
-    const  changeMonth = async (value)=>{
+    const  changeMonth =  (value)=>{
         alert("Atencion: Se reinicio primer dia del mes");
         let month_data = get_month_esp_eng(value);
         let date = `${currentYearNumber}-${month_data.mesNumero}-01`;
-        getDayClicked(`${1}-${month_data.mesNumero}-${currentYearNumber}`);
-        setSelectedDay(1);
+         setSelectedDay(1);
         const daysinmonth = moment(date).daysInMonth();
-        await setVisibleMonths(!visibleMonths);
-        await setDaysInMonth(daysinmonth);
+         setVisibleMonths(!visibleMonths);
+         setDaysInMonth(daysinmonth);
         currentMonth.current = month_data.mes;
-        await setCurrentMonthNumber(month_data.mesNumero);
-        
+         setCurrentMonthNumber(month_data.mesNumero);
+         getDayClicked({ day: 1, month: month_data.mesNumero, year: currentYearNumber});
+
     }
 
-    const changeYear = async (value)=>{
+
+    const  changeYear = (value)=>{
         alert("Atencion: Se reinicio primer dia del mes");
-        getDayClicked(`${1}-${currentMonthNumber}-${value}`);
         setSelectedDay(1);
-        await setCurrentYearNumber(value);
-        await setVisibleYears(!visibleYears);
-        
+        setCurrentYearNumber(value);
+        setVisibleYears(!visibleYears);
+        getDayClicked({ day: 1, month: currentMonthNumber, year: value});
+
     }
 
-    const handleDayClick = async (e)=>{
-        
-        getDayClicked(`${e.day}-${currentMonthNumber}-${currentYearNumber}`);
-        await setSelectedDay(e.day);
+
+   
+    const handleDayClick = (e)=>{
+         setSelectedDay(e.day);
+         getDayClicked({ day: e.day, month: currentMonthNumber, year: currentYearNumber});
+
     }
 
 
     useEffect(()=>{
         searchDayStart();//fix error cause function not wait longer for update the state
         process_days();
-
     },[appointmentsByDoctor,selectedDoctor,selectedDay,startCol,dayStart,currentMonth,currentYearNumber,daysInMonth,currentMonthNumber]);
 
 

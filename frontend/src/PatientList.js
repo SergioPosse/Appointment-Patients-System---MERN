@@ -38,8 +38,7 @@ const PatientList = (props)=>{
           />
         </div>
 
-        <div className="tabla">
-          <table className="table centered highlight">
+          <table className="table">
               <thead>
               <tr>
                 <th>
@@ -54,7 +53,6 @@ const PatientList = (props)=>{
               { printRow }
             </tbody>
           </table>
-        </div>
       
       </div>
     </div>

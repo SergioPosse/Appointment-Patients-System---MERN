@@ -97,10 +97,16 @@
 .month-modal{
     position: absolute;
     background-color: coral;
-    width: 15%;
-    text-align: center;
+    width: 25%;
+    display:flex;
     overflow-y:scroll;
-    height:30vh;
+    height:70%;
+    padding:0;
+}
+
+ul{
+    list-style-type: none;
+    text-align:center;
 }
 .month-modal ul li:hover{
     background-color: cyan;
@@ -115,15 +121,18 @@
 
 .year-modal{
     position:absolute;
-    width:15%;
+    width:25%;
     left:85%;
     background-color: coral;
     text-align:center;
+    display:flex;
+    padding:0;
     overflow-y:scroll;
-    height:30vh;
+    height:70%;
 }
 .year-modal ul li:hover{
     background-color: cyan;
     color:black;
     border:1px solid chartreuse;
+    cursor:pointer;
 }

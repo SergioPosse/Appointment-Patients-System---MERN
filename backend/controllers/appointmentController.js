@@ -16,7 +16,7 @@ appointmentController.getAppointments = async (req,res) => {
 appointmentController.getAppointmentByDoctor = async(req,res) => { 
 Appointment.
   find({ doctor: req.params.id }).
-  populate('author').
+  populate('doctor').
   populate('patient').
   exec(function (err, appointment) {
 
@@ -28,14 +28,16 @@ Appointment.
 };
 
 appointmentController.createAppointment = async (req,res) => { 
-    const { doctor, patient, description, acomplishDate } = req.body;
+    const { doctor, patient, description, acomplishDate, time} = req.body;
     //how to pass the patients and doctor object from the frontend???
+    console.log("ento");
     const newAppointment = new Appointment({
         patient: patient,
         doctor: doctor,
-        agreedDate: moment.now(),
+        agreedDate: moment().format("YYYY-MM-DD"),
         description: description,
         acomplishDate: acomplishDate,
+        time: time,
         state: false
     });
 
@@ -43,7 +45,7 @@ appointmentController.createAppointment = async (req,res) => {
         await newAppointment.save();
         res.json({message: 'New Appoinment Saved Suceffully'});
     }catch(error){
-        res.status(403).json({message: error})
+        console.log("error interno: "+error);
     }
     
 };
