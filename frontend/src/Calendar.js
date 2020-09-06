@@ -175,7 +175,7 @@ const Calendar = (props)=>{
     useEffect(()=>{
         searchDayStart();//fix error cause function not wait longer for update the state
         process_days();
-    },[appointmentsByDoctor,selectedDoctor,selectedDay,startCol,dayStart,currentMonth,currentYearNumber,daysInMonth,currentMonthNumber]);
+    },[visibleTimePicker,appointmentsByDoctor,selectedDoctor,selectedDay,startCol,dayStart,currentMonth,currentYearNumber,daysInMonth,currentMonthNumber]);
 
 
     useEffect(() => {
